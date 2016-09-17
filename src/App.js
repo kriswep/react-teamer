@@ -18,6 +18,7 @@ class App extends Component {
         </div>
         </Link>
         <ul>
+          <li><NavLink to="/rules">Define Rules</NavLink></li>
           <li><NavLink to="/teams">Manage Teams</NavLink></li>
         </ul>
         

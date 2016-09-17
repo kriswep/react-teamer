@@ -38,8 +38,8 @@ const TodoForm = ({addTeam}) => {
         addTeam(makeTeam(team, teamName.value, 
           teamMin.value, teamMax.value) );
         teamName.value = '';
-        teamMin.value = '';
-        teamMax.value = '';
+        teamMin.value = 0;
+        teamMax.value = 0;
       } }>
         +
       </button>

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import TeamForm from '../presentation/TeamForm';
 import TeamList from '../presentation/TeamList';
 
-class Team extends Component {
+class Teams extends Component {
   constructor(props) {
     // Pass props to parent class
     super(props);
@@ -47,5 +47,5 @@ class Team extends Component {
 
 }
 
-export default Team;
+export default Teams;
 
