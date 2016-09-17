@@ -1,0 +1,8 @@
+.Dice {
+  animation: Dice-spin infinite 4s ease-in-out;
+  height: 100px;
+}
+@keyframes Dice-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
