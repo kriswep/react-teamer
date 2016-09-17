@@ -5,13 +5,13 @@ const RuleForm = ({setRules, rules}) => {
   const state = {
     members : rules.members
   }
-    
+  /*  
   function makeRule(rules, members){
     rules.members = members;
     
     return rules;
   }
-  
+  */
   function changeRule(e){
     state.members = e.target.value;
     setRules(state);
