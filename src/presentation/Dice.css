@@ -1,3 +1,9 @@
+.Dice-container{
+  padding:30px;
+}
+.Dice-container .false{
+  display: none;
+}
 .Dice {
   animation: Dice-spin infinite 4s ease-in-out;
   height: 100px;

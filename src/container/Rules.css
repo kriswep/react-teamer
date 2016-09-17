@@ -1,0 +1,6 @@
+.Rules-container{
+  padding:0;
+}
+.Rules-container .true{
+  display: none;
+}

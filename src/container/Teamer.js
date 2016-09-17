@@ -19,7 +19,8 @@ class Teamer extends Component {
       message: {
         text: "",
         severity: "",
-      }
+      },
+      inAction: false,
     }
   }
   // Lifecycle method
@@ -27,14 +28,26 @@ class Teamer extends Component {
   }
 
   setRules(rules) {
+    if (this.state.inAction) {
+      // no team changes when in action
+      return;
+    }
     this.setState({ rules: rules });
   }
 
   addTeam(team) {
+    if (this.state.inAction) {
+      // no team changes when in action
+      return;
+    }
     this.state.teams.push(team);
     this.setState({ teams: this.state.teams });
   }
   removeTeam(teamIndex) {
+    if (this.state.inAction) {
+      // no team changes when in action
+      return;
+    }
     const newTeams = this.state.teams.filter((team, index) => {
       if (teamIndex !== index) {
         return team;
@@ -45,7 +58,27 @@ class Teamer extends Component {
     this.setState({ teams: newTeams });
   }
 
+  start() {
+    if (this.state.inAction) {
+      // Zurücksetzen
+      this.setState({ inAction: false });
+    } else {
+      // Starten
+      this.setState({ inAction: true });
+    }
+  }
+
   dice() {
+    if (!this.state.inAction) {
+      this.setState({
+        message: {
+          text: `Done managing team conditions? Press GO.`,
+          severity: 'error'
+        }
+      });
+      return;
+    }
+
     const indexedTeams = this.state.teams.map((team, index) => {
       team.teamIndex = index;
       return team;
@@ -53,14 +86,15 @@ class Teamer extends Component {
     const openTeams = indexedTeams.filter((team) => {
       return team.members < team.max;
     });
-    if ( openTeams.length <=0 ) {      
-    this.setState({
-      lastTeamName: '',
-      message: {
-        text: `No open teams found!`,
-        severity: 'error' 
-      }
-    });
+    if (openTeams.length <= 0) {
+      this.setState({
+        lastTeamName: '',
+        message: {
+          text: `No open teams found!`,
+          severity: 'error'
+        }
+      });
+      return;
     }
     const teamToAddIndex = Math.floor(Math.random() * openTeams.length);
     const teamToAdd = openTeams.find((team, index) => {
@@ -78,7 +112,7 @@ class Teamer extends Component {
       lastTeamName: teamToAdd.name,
       message: {
         text: `Participant added to ${teamToAdd.name}`,
-        severity: 'success' 
+        severity: 'success'
       }
     });
   }
@@ -86,9 +120,9 @@ class Teamer extends Component {
   render() {
     return (
       <div>
-        <Message 
+        <Message
           message={this.state.message}
-        />
+          />
         <Rules
           {...this.state}
           setRules={this.setRules.bind(this) }
@@ -98,7 +132,9 @@ class Teamer extends Component {
           addTeam={this.addTeam.bind(this) }
           removeTeam={this.removeTeam.bind(this) }
           />
+        <button onClick={this.start.bind(this) }>{this.state.inAction ? 'Restart' : 'GO'}</button>
         <Dicer
+          {...this.state}
           dice={this.dice.bind(this) }
           lastTeamName={this.state.lastTlastTeamNameeamAddedInto}
           />

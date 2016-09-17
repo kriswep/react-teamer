@@ -1,0 +1,6 @@
+.Teams-container{
+  padding:0;
+}
+.Teams-container .true{
+  display: none;
+}

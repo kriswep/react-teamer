@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import RuleForm from '../presentation/RuleForm';
+import './Rules.css';
 
 class Rules extends Component {
   /*
@@ -25,11 +26,14 @@ class Rules extends Component {
   */
   render() {
     return (
-      <div>
+      <div className='Rules-container'>
+      <span
+          className={this.props.inAction}>
         <RuleForm
           setRules={this.props.setRules }
           rules={this.props.rules}
           />
+          </span>
       </div>
     )
   }
