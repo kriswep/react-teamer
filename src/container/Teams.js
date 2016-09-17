@@ -4,6 +4,7 @@ import TeamForm from '../presentation/TeamForm';
 import TeamList from '../presentation/TeamList';
 
 class Teams extends Component {
+  /*
   constructor(props) {
     // Pass props to parent class
     super(props);
@@ -31,15 +32,16 @@ class Teams extends Component {
     this.setState({ teams: newTeams});
     
   }
+  */
   render() {
     return (
       <div>
-        <TeamForm addTeam={this.addTeam.bind(this) }/>
+        <TeamForm addTeam={this.props.addTeam }/>
         <h2>Teams</h2>
 
         <TeamList
-          teams={this.state.teams}
-          remove={this.removeTeam.bind(this) }
+          teams={this.props.teams}
+          remove={this.props.removeTeam }
           />
       </div>
     )

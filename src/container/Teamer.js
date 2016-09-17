@@ -15,12 +15,44 @@ class Teamer extends Component {
       teams: []
     }
   }
+  // Lifecycle method
+  componentDidMount() {
+  } 
+  
+  setRules(rules) {
+    this.setState({ rules: rules });
+    console.log(this.state.rules);
+    
+  }
+
+  addTeam(team) {
+    this.state.teams.push(team);
+    this.setState({ teams: this.state.teams });
+  }
+  removeTeam(teamIndex) {
+    const newTeams = this.state.teams.filter((team, index) => {
+      if (teamIndex !== index) {
+        return team;
+      }
+      return null;
+    });
+    
+    this.setState({ teams: newTeams});    
+  }
 
   render() {
     return (
       <div>
-      <Rules></Rules>
-      <Teams></Teams>
+        <Rules
+          {...this.state}
+          setRules={this.setRules.bind(this) }
+          />
+        <Teams
+          {...this.state}
+          addTeam={this.addTeam.bind(this) }
+          removeTeam={this.removeTeam.bind(this) }
+          
+          />
       </div>
     )
   }
