@@ -9,7 +9,7 @@ class Dicer extends Component {
         <span onClick={this.props.dice} >
           <img src={dice} className="Dice" alt="dice" />
         </span>
-        <span>{this.props.lastTeamAddedInto}</span>
+        <span>{this.props.lastTeamName}</span>
       </div>
     )
   }

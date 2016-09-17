@@ -9,13 +9,14 @@ const TodoForm = ({addTeam}) => {
   const team = {
     name: "",
     min: "",
-    max: ""
+    max: "",
+    members: 0,
   }; 
   
   function makeTeam(team, name = "Team", min = 0, max = 0 ) {
       team.name = name || "Team";
       team.min = min || 0;
-      team.max = max || 0;
+      team.max = max || 5;
       
       return team;
   };
@@ -39,7 +40,7 @@ const TodoForm = ({addTeam}) => {
           teamMin.value, teamMax.value) );
         teamName.value = '';
         teamMin.value = 0;
-        teamMax.value = 0;
+        teamMax.value = 5;
       } }>
         +
       </button>

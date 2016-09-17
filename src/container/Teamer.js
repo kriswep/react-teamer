@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Teams from './Teams';
 import Rules from './Rules';
 import Dicer from '../presentation/Dicer';
+import Message from '../presentation/Message';
 
 class Teamer extends Component {
   constructor(props) {
@@ -15,6 +16,10 @@ class Teamer extends Component {
       },
       teams: [],
       lastTeamAddedInto: 0,
+      message: {
+        text: "",
+        severity: "",
+      }
     }
   }
   // Lifecycle method
@@ -41,13 +46,49 @@ class Teamer extends Component {
   }
 
   dice() {
-    let lastTeamAddedInto = Math.floor(Math.random() * this.state.teams.length);
-    this.setState({ lastTeamAddedInto: lastTeamAddedInto });
+    const indexedTeams = this.state.teams.map((team, index) => {
+      team.teamIndex = index;
+      return team;
+    });
+    const openTeams = indexedTeams.filter((team) => {
+      return team.members < team.max;
+    });
+    if ( openTeams.length <=0 ) {      
+    this.setState({
+      lastTeamName: '',
+      message: {
+        text: `No open teams found!`,
+        severity: 'error' 
+      }
+    });
+    }
+    const teamToAddIndex = Math.floor(Math.random() * openTeams.length);
+    const teamToAdd = openTeams.find((team, index) => {
+      return index === teamToAddIndex;
+    })
+
+    const newTeams = indexedTeams.map((team, index) => {
+      if (team.teamIndex === teamToAdd.teamIndex) {
+        team.members++;
+      }
+      return team;
+    })
+    this.setState({
+      teams: newTeams,
+      lastTeamName: teamToAdd.name,
+      message: {
+        text: `Participant added to ${teamToAdd.name}`,
+        severity: 'success' 
+      }
+    });
   }
 
   render() {
     return (
       <div>
+        <Message 
+          message={this.state.message}
+        />
         <Rules
           {...this.state}
           setRules={this.setRules.bind(this) }
@@ -59,7 +100,7 @@ class Teamer extends Component {
           />
         <Dicer
           dice={this.dice.bind(this) }
-          lastTeamAddedInto={this.state.lastTeamAddedInto}
+          lastTeamName={this.state.lastTlastTeamNameeamAddedInto}
           />
       </div>
     )
