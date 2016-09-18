@@ -109,7 +109,6 @@ class Teamer extends Component {
       }
       return neededMembers;
     }, 0);
-    console.log(neededMembers);
 
     return neededMembers;
   }
@@ -142,11 +141,21 @@ class Teamer extends Component {
       return;
     }
     
-    this.calculateNeededMembers();
-
-    const openTeams = this.state.teams.filter((team) => {
+    
+    let openTeams = this.state.teams.filter((team) => {
       return team.members < team.max;
     });
+    if (this.state.rules.participants - this.calculateAddedMembers() <= this.calculateNeededMembers()){
+      // uhoh , we have barely enough participants left
+      // prioritise teams in need 
+      console.log("in need");
+      openTeams = openTeams.filter((team)=>{
+        if (team.min - team.members > 0){
+          return true;
+        }
+        return false;
+      })
+    }
     if (openTeams.length <= 0) {
       this.setState({
         lastTeamName: '',
