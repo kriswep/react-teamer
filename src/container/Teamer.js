@@ -4,6 +4,7 @@ import Teams from './Teams';
 import Rules from './Rules';
 import Dicer from '../presentation/Dicer';
 import Message from '../presentation/Message';
+import './Teamer.css';
 
 class Teamer extends Component {
   constructor(props) {
@@ -20,6 +21,7 @@ class Teamer extends Component {
         text: "",
         severity: "",
       },
+      actualParticipant: 1,
       inAction: false,
     }
   }
@@ -83,7 +85,11 @@ class Teamer extends Component {
   start() {
     if (this.state.inAction) {
       // Zurücksetzen
-      this.setState({ inAction: false });
+      this.setState({
+        actualParticipant: 1,
+        inAction: false
+      }
+      );
     } else {
       // Starten
       if (this.state.rules.participants < this.calculateNeededMembers()) {
@@ -95,9 +101,16 @@ class Teamer extends Component {
         });
         return;
       }
-      this.setState({ inAction: true });
+      this.setState({
+        actualParticipant: 1,
+        inAction: true,
+        message: {
+          text: `Roll the dices!`,
+          severity: 'success'
+        }
+      });
     }
-    
+
     this.resetTeams();
   }
 
@@ -112,12 +125,12 @@ class Teamer extends Component {
 
     return neededMembers;
   }
-  
+
   calculateAddedMembers() {
-    const addedMembers = this.state.teams.reduce((addedMembers, team) =>{
+    const addedMembers = this.state.teams.reduce((addedMembers, team) => {
       return addedMembers += team.members;
     }, 0);
-    
+
     return addedMembers;
   }
 
@@ -130,7 +143,7 @@ class Teamer extends Component {
         }
       });
       return;
-    } 
+    }
     if (this.state.rules.participants <= this.calculateAddedMembers()) {
       this.setState({
         message: {
@@ -140,17 +153,17 @@ class Teamer extends Component {
       });
       return;
     }
-    
-    
+
+
     let openTeams = this.state.teams.filter((team) => {
       return team.members < team.max;
     });
-    if (this.state.rules.participants - this.calculateAddedMembers() <= this.calculateNeededMembers()){
+    if (this.state.rules.participants - this.calculateAddedMembers() <= this.calculateNeededMembers()) {
       // uhoh , we have barely enough participants left
       // prioritise teams in need 
       console.log("in need");
-      openTeams = openTeams.filter((team)=>{
-        if (team.min - team.members > 0){
+      openTeams = openTeams.filter((team) => {
+        if (team.min - team.members > 0) {
           return true;
         }
         return false;
@@ -177,13 +190,17 @@ class Teamer extends Component {
       }
       return team;
     })
+    const nextParticipant = (this.state.actualParticipant + 1 > this.state.rules.participants) ? this.state.actualParticipant : this.state.actualParticipant + 1;
+
     this.setState({
       teams: newTeams,
       lastTeamName: teamToAdd.name,
+      actualParticipant: nextParticipant,
       message: {
-        text: `Participant added to ${teamToAdd.name}`,
+        text: `Participant ${this.state.actualParticipant} added to ${teamToAdd.name}`,
         severity: 'success'
       }
+
     });
   }
 
@@ -203,6 +220,9 @@ class Teamer extends Component {
           removeTeam={this.removeTeam.bind(this) }
           />
         <button onClick={this.start.bind(this) }>{this.state.inAction ? 'Restart' : 'GO'}</button>
+        <span className="ParticipantTitle">
+          <h2 className={this.state.inAction}>Participants {this.state.actualParticipant} roll the dices!</h2>
+        </span>
         <Dicer
           {...this.state}
           dice={this.dice.bind(this) }
