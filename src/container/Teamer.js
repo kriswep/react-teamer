@@ -92,7 +92,23 @@ class Teamer extends Component {
       );
     } else {
       // Starten
-      if (this.state.rules.participants < this.calculateNeededMembers()) {
+      if (this.state.rules.participants <= 0) {
+        this.setState({
+          message: {
+            text: `Tell me how many participants I should assign to a team!`,
+            severity: 'error'
+          }
+        });
+        return;
+      } else if (this.state.teams.length <= 0) {
+        this.setState({
+          message: {
+            text: `Tell me the teams conditions!`,
+            severity: 'error'
+          }
+        });
+        return;
+      } else if (this.state.rules.participants < this.calculateNeededMembers()) {
         this.setState({
           message: {
             text: `Not enough participants to fill all teams`,
