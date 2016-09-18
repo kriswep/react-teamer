@@ -110,10 +110,18 @@ class Teamer extends Component {
           }
         });
         return false;
-      } else if (this.state.rules.participants < this.calculateNeededMembers()) {
+      } else if (Number(this.state.rules.participants) < this.calculateNeededMembers()) {
         this.setState({
           message: {
             text: `Not enough participants to fill all teams`,
+            severity: 'error'
+          }
+        });
+        return false;
+      } else if (Number(this.state.rules.participants) > this.calculateMaxMembers()) {
+        this.setState({
+          message: {
+            text: `Too many participants for given teams`,
             severity: 'error'
           }
         });
@@ -144,6 +152,15 @@ class Teamer extends Component {
     }, 0);
 
     return neededMembers;
+  }
+  
+  
+  calculateMaxMembers() {
+    const maxMembers = this.state.teams.reduce((maxMembers, team) => {     
+      return maxMembers + team.max;
+    }, 0);
+
+    return maxMembers;
   }
 
   calculateAddedMembers() {
