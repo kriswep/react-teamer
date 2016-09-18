@@ -1,31 +1,30 @@
 import React from 'react';
+import TextField from 'material-ui/TextField';
+//import DoneIcon from 'material-ui/svg-icons/action/done';
+//import FlatButton from 'material-ui/FlatButton';
 
 const RuleForm = ({setRules, rules}) => {
-  // Input tracker
+  
   const state = {
-    participants : rules.participants
+    participants: rules.participants
   }
- 
-  function changeRule(e){
+
+  function changeRule(e) {
     state.participants = e.target.value;
     setRules(state);
   }
-  
+
   return (
-    <form onSubmit={(e) => {
-      e.preventDefault();
-    }}>
-      <input
-        onChange={changeRule} 
-        value={state.participants}/>
-      <button onClick={(e) => {
-        e.preventDefault();
-        setRules(state);
-        //participants.value = 0;
-      }} >+</button>
-     </form>
+
+    <TextField
+      floatingLabelText="Number of participants"
+      hintText="How many participants?"
+      fullWidth={true}
+      type="number"
+      onChange={changeRule}
+      value={state.participants}/>
+
   );
-  
-}
+};
 
 export default RuleForm;

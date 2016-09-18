@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Message from './Message';
 import dice from './dice.svg';
 import './Dice.css';
 
@@ -8,8 +9,10 @@ class Dicer extends Component {
       <div className='Dice-container'>
         <span className={this.props.inAction} onClick={this.props.dice} >
           <img src={dice} className="Dice" alt="dice" />
-        </span>
-        <span>{this.props.lastTeamName}</span>
+        </span>        
+        <Message
+          message={this.props.message}
+          />
       </div>
     )
   }

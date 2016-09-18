@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import AppBar from 'material-ui/AppBar';
+import Settings from '../presentation/Settings';
 import Teams from './Teams';
 import Rules from './Rules';
 import Dicer from '../presentation/Dicer';
@@ -82,16 +84,16 @@ class Teamer extends Component {
     })
   }
 
-  start() {
+  startDice() {
     if (this.state.inAction) {
-      // Zurücksetzen
+      // reset
       this.setState({
         actualParticipant: 1,
         inAction: false
       }
       );
     } else {
-      // Starten
+      // start
       if (this.state.rules.participants <= 0) {
         this.setState({
           message: {
@@ -99,7 +101,7 @@ class Teamer extends Component {
             severity: 'error'
           }
         });
-        return;
+        return false;
       } else if (this.state.teams.length <= 0) {
         this.setState({
           message: {
@@ -107,7 +109,7 @@ class Teamer extends Component {
             severity: 'error'
           }
         });
-        return;
+        return false;
       } else if (this.state.rules.participants < this.calculateNeededMembers()) {
         this.setState({
           message: {
@@ -115,7 +117,7 @@ class Teamer extends Component {
             severity: 'error'
           }
         });
-        return;
+        return false;
       }
       this.setState({
         actualParticipant: 1,
@@ -128,6 +130,8 @@ class Teamer extends Component {
     }
 
     this.resetTeams();
+    
+    return true;
   }
 
   calculateNeededMembers() {
@@ -223,27 +227,21 @@ class Teamer extends Component {
   render() {
     return (
       <div>
+        <AppBar
+          title="Teamer"
+          showMenuIconButton={false}
+          />
         <Message
           message={this.state.message}
           />
-        <Rules
+        <Settings 
           {...this.state}
           setRules={this.setRules.bind(this) }
-          />
-        <Teams
-          {...this.state}
           addTeam={this.addTeam.bind(this) }
           removeTeam={this.removeTeam.bind(this) }
-          />
-        <button onClick={this.start.bind(this) }>{this.state.inAction ? 'Restart' : 'GO'}</button>
-        <span className="ParticipantTitle">
-          <h2 className={this.state.inAction}>Participants {this.state.actualParticipant} roll the dices!</h2>
-        </span>
-        <Dicer
-          {...this.state}
+          startDice={this.startDice.bind(this) }
           dice={this.dice.bind(this) }
-          lastTeamName={this.state.lastTlastTeamNameeamAddedInto}
-          />
+          />  
       </div>
     )
   }
