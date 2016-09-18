@@ -12,7 +12,7 @@ class Teamer extends Component {
     //set initial state
     this.state = {
       rules: {
-        members: 0
+        participants: 0
       },
       teams: [],
       lastTeamAddedInto: 0,
@@ -40,6 +40,16 @@ class Teamer extends Component {
       // no team changes when in action
       return;
     }
+    if (team.min > team.max) {
+      this.setState({
+        message: {
+          text: "Min value must be smaller max value.",
+          severity: "error",
+        }
+      });
+      return;
+    }
+
     this.state.teams.push(team);
     this.setState({ teams: this.state.teams });
   }
@@ -58,14 +68,58 @@ class Teamer extends Component {
     this.setState({ teams: newTeams });
   }
 
+  resetTeams() {
+    const resetTeams = this.state.teams.map((team, index) => {
+      team.teamIndex = index;
+      team.members = 0;
+      return team;
+    });
+
+    this.setState({
+      teams: resetTeams
+    })
+  }
+
   start() {
     if (this.state.inAction) {
       // Zurücksetzen
       this.setState({ inAction: false });
     } else {
       // Starten
+      if (this.state.rules.participants < this.calculateNeededMembers()) {
+        this.setState({
+          message: {
+            text: `Not enough participants to fill all teams`,
+            severity: 'error'
+          }
+        });
+        return;
+      }
       this.setState({ inAction: true });
     }
+    
+    this.resetTeams();
+  }
+
+  calculateNeededMembers() {
+    const neededMembers = this.state.teams.reduce((neededMembers, team) => {
+      const neededMembersInTeam = team.min - team.members;
+      if (neededMembersInTeam > 0) {
+        neededMembers += neededMembersInTeam
+      }
+      return neededMembers;
+    }, 0);
+    console.log(neededMembers);
+
+    return neededMembers;
+  }
+  
+  calculateAddedMembers() {
+    const addedMembers = this.state.teams.reduce((addedMembers, team) =>{
+      return addedMembers += team.members;
+    }, 0);
+    
+    return addedMembers;
   }
 
   dice() {
@@ -77,13 +131,20 @@ class Teamer extends Component {
         }
       });
       return;
+    } 
+    if (this.state.rules.participants <= this.calculateAddedMembers()) {
+      this.setState({
+        message: {
+          text: `Everybody should be assigned to a team.`,
+          severity: 'success'
+        }
+      });
+      return;
     }
+    
+    this.calculateNeededMembers();
 
-    const indexedTeams = this.state.teams.map((team, index) => {
-      team.teamIndex = index;
-      return team;
-    });
-    const openTeams = indexedTeams.filter((team) => {
+    const openTeams = this.state.teams.filter((team) => {
       return team.members < team.max;
     });
     if (openTeams.length <= 0) {
@@ -101,7 +162,7 @@ class Teamer extends Component {
       return index === teamToAddIndex;
     })
 
-    const newTeams = indexedTeams.map((team, index) => {
+    const newTeams = this.state.teams.map((team, index) => {
       if (team.teamIndex === teamToAdd.teamIndex) {
         team.members++;
       }

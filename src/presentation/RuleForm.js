@@ -3,17 +3,11 @@ import React from 'react';
 const RuleForm = ({setRules, rules}) => {
   // Input tracker
   const state = {
-    members : rules.members
+    participants : rules.participants
   }
-  /*  
-  function makeRule(rules, members){
-    rules.members = members;
-    
-    return rules;
-  }
-  */
+ 
   function changeRule(e){
-    state.members = e.target.value;
+    state.participants = e.target.value;
     setRules(state);
   }
   
@@ -23,11 +17,11 @@ const RuleForm = ({setRules, rules}) => {
     }}>
       <input
         onChange={changeRule} 
-        value={state.members}/>
+        value={state.participants}/>
       <button onClick={(e) => {
         e.preventDefault();
         setRules(state);
-        //members.value = 0;
+        //participants.value = 0;
       }} >+</button>
      </form>
   );
