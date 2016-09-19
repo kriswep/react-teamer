@@ -40,7 +40,8 @@ class Teams extends Component {
         <span
           className={this.props.inAction}>
           <TeamForm
-            addTeam={this.props.addTeam }/>
+            addTeam={this.props.addTeam }
+            defaultTeam={this.props.defaultTeam}/>
         </span>
       </div>
     )

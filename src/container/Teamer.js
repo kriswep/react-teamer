@@ -15,8 +15,14 @@ class Teamer extends Component {
     super(props);
     //set initial state
     this.state = {
+      defaultTeam: {
+        name: "",
+        min: "",
+        max: "",
+        members: 0,
+      },
       rules: {
-        participants: 0
+        participants: ""
       },
       teams: [],
       lastTeamAddedInto: 0,
@@ -45,7 +51,16 @@ class Teamer extends Component {
       // no team changes when in action
       return;
     }
-    if (team.min > team.max) {
+
+    if (!team.max) {
+      this.setState({
+        message: {
+          text: "Doesn't make sense to add a team without members.",
+          severity: "error",
+        }
+      });
+      return;
+    } else if (team.min > team.max) {
       this.setState({
         message: {
           text: "Min value must be smaller max value.",
@@ -56,7 +71,11 @@ class Teamer extends Component {
     }
 
     this.state.teams.push(team);
-    this.setState({ teams: this.state.teams });
+    this.setState({
+      teams: this.state.teams,
+    });
+    
+    return this.state.defaultTeam;
   }
   removeTeam(teamIndex) {
     if (this.state.inAction) {
@@ -139,7 +158,7 @@ class Teamer extends Component {
     }
 
     this.resetTeams();
-    
+
     return true;
   }
 
@@ -154,10 +173,10 @@ class Teamer extends Component {
 
     return neededMembers;
   }
-  
-  
+
+
   calculateMaxMembers() {
-    const maxMembers = this.state.teams.reduce((maxMembers, team) => {     
+    const maxMembers = this.state.teams.reduce((maxMembers, team) => {
       return maxMembers + team.max;
     }, 0);
 
@@ -252,14 +271,15 @@ class Teamer extends Component {
         <Message
           message={this.state.message}
           />
-        <Settings 
+        <Settings
           {...this.state}
           setRules={this.setRules.bind(this) }
           addTeam={this.addTeam.bind(this) }
           removeTeam={this.removeTeam.bind(this) }
           startDice={this.startDice.bind(this) }
           dice={this.dice.bind(this) }
-          />  
+          defaultTeam={this.state.defaultTeam}
+          />
 
         <TeamList
           teams={this.state.teams}

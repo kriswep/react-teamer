@@ -3,7 +3,7 @@ import React from 'react';
 //import FlatButton from 'material-ui/FlatButton';
 import {GridList, GridTile} from 'material-ui/GridList';
 import IconButton from 'material-ui/IconButton';
-import Subheader from 'material-ui/Subheader';
+//import Subheader from 'material-ui/Subheader';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
 
 /*

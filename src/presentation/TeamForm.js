@@ -3,14 +3,14 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DoneIcon from 'material-ui/svg-icons/action/done';
 
-const TodoForm = ({addTeam}) => {
-
+const TodoForm = ({addTeam, defaultTeam}) => {
+ let name, min, max;
   const state = {
     team: {
-      name: "",
-      min: "",
-      max: "",
-      members: 0,
+      name: defaultTeam.name,
+      min: defaultTeam.min,
+      max: defaultTeam.max,
+      members: defaultTeam.members,
     }
   };
 
@@ -35,6 +35,18 @@ const TodoForm = ({addTeam}) => {
   function changeMax(e) {
     state.team.max = e.target.value || 0;
   }
+  
+  function makeTeam(){
+    state.team.name = name.input.value || 'Team';
+    state.team.min = min.input.value || 0;
+    state.team.max = max.input.value || 0;
+    const added = addTeam(state.team);
+    if ( added ) {
+      name.input.value = added.name;
+      min.input.value = added.min;
+      max.input.value = added.max;
+    } 
+  }
 
   return (
     <div>
@@ -43,8 +55,10 @@ const TodoForm = ({addTeam}) => {
         hintText="What's the teams' name?"
         fullWidth={true}
         type="text"
-        defaultValue={state.team.name}
-        onChange={changeName}
+       
+        ref={node => {
+        name = node;
+      }}
         />
 
       <TextField
@@ -52,7 +66,9 @@ const TodoForm = ({addTeam}) => {
         hintText="Minimum team members."
         fullWidth={true}
         type="number"
-        onChange={changeMin}
+        ref={node => {
+        min = node;
+      }}
         />
 
       <TextField
@@ -60,7 +76,9 @@ const TodoForm = ({addTeam}) => {
         hintText="Maximum team members."
         fullWidth={true}
         type="number"
-        onChange={changeMax}
+        ref={node => {
+        max = node;
+      }}
         />
 
       <RaisedButton
@@ -71,7 +89,12 @@ const TodoForm = ({addTeam}) => {
         style={style}
         onClick={(e) => {
           e.preventDefault();
-          addTeam(state.team);
+          makeTeam();
+          //state.team.name = state.team.name || 'Team';
+          //state.team.min = state.team.min || 0;
+          //state.team.may = state.team.max || 0;
+          //addTeam(state.team);
+          //state.team.name = "";
         } }
         />
     </div>
