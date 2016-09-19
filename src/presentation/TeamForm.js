@@ -26,6 +26,7 @@ const TodoForm = ({addTeam, defaultTeam}) => {
     return team;
   };
   */
+  /*
   function changeName(e) {
     state.team.name = e.target.value || "Team";
   }
@@ -35,6 +36,7 @@ const TodoForm = ({addTeam, defaultTeam}) => {
   function changeMax(e) {
     state.team.max = e.target.value || 0;
   }
+  */
   
   function makeTeam(){
     state.team.name = name.input.value || 'Team';
