@@ -43,6 +43,7 @@ const TodoForm = ({addTeam}) => {
         hintText="What's the teams' name?"
         fullWidth={true}
         type="text"
+        defaultValue={state.team.name}
         onChange={changeName}
         />
 

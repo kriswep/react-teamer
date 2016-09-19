@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import TeamForm from '../presentation/TeamForm';
-import TeamList from '../presentation/TeamList';
+//import TeamList from '../presentation/TeamList';
 import './Teams.css';
 
 class Teams extends Component {
@@ -42,12 +42,6 @@ class Teams extends Component {
           <TeamForm
             addTeam={this.props.addTeam }/>
         </span>
-        <h2>Teams</h2>
-
-        <TeamList
-          teams={this.props.teams}
-          remove={this.props.removeTeam }
-          />
       </div>
     )
   }

@@ -3,6 +3,7 @@ import {
   Step,
   Stepper,
   StepLabel,
+  StepContent,
 } from 'material-ui/Stepper';
 import RaisedButton from 'material-ui/RaisedButton';
 import FlatButton from 'material-ui/FlatButton';
@@ -80,55 +81,71 @@ class Settings extends React.Component {
     }
   }
 
+  renderStepActions(stepIndex,finished) {
+    
+    const hideStyle = { display: 'none' };
+    const contentStyle = { margin: '0 16px' };
+    
+    return finished ? (
+      <div style={contentStyle}>
+        <p>
+          <a
+            href="#"
+            onClick={(event) => {
+              event.preventDefault();
+              this.setState({ stepIndex: 0, finished: false });
+            } }
+            >
+            Click here
+          </a> to reset the example.
+        </p>
+      </div>
+    ) : (
+        <div style={contentStyle}>
+          {this.getStepContent(stepIndex) }
+          <div style={{ marginTop: 12 }}>
+            <FlatButton
+              label="Back"
+              disabled={stepIndex === 0}
+              onClick={this.handlePrev.bind(this) }
+              style={{ marginRight: 12 }}
+              />
+            <RaisedButton
+              label={stepIndex === 2 ? 'Finish' : 'Next'}
+              style={stepIndex === 2 ? hideStyle : ''}
+              primary={true}
+              onClick={this.handleNext.bind(this) }
+              />
+          </div>
+        </div>
+      );
+  }
+
   render() {
     const {finished, stepIndex} = this.state;
-    const contentStyle = { margin: '0 16px' };
 
     return (
       <div style={{ width: '100%', maxWidth: 700, margin: 'auto' }}>
-        <Stepper activeStep={stepIndex}>
+        <Stepper activeStep={stepIndex} orientation="vertical">
           <Step>
             <StepLabel>Participants</StepLabel>
+            <StepContent>
+              {this.renderStepActions(stepIndex,finished) }
+            </StepContent>
           </Step>
           <Step>
             <StepLabel>Teams</StepLabel>
+            <StepContent>
+              {this.renderStepActions(stepIndex,finished) }
+            </StepContent>
           </Step>
           <Step>
             <StepLabel>Dice</StepLabel>
+            <StepContent>
+              {this.renderStepActions(stepIndex,finished) }
+            </StepContent>
           </Step>
         </Stepper>
-        <div style={contentStyle}>
-          {finished ? (
-            <p>
-              <a
-                href="#"
-                onClick={(event) => {
-                  event.preventDefault();
-                  this.setState({ stepIndex: 0, finished: false });
-                } }
-                >
-                Click here
-              </a> to reset the example.
-            </p>
-          ) : (
-              <div>
-                {this.getStepContent(stepIndex) }
-                <div style={{ marginTop: 12 }}>
-                  <FlatButton
-                    label="Back"
-                    disabled={stepIndex === 0}
-                    onClick={this.handlePrev.bind(this) }
-                    style={{ marginRight: 12 }}
-                    />
-                  <RaisedButton
-                    label={stepIndex === 2 ? 'Finish' : 'Next'}
-                    primary={true}
-                    onClick={this.handleNext.bind(this) }
-                    />
-                </div>
-              </div>
-            ) }
-        </div>
       </div>
     );
   }

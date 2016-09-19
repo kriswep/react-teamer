@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 
 import AppBar from 'material-ui/AppBar';
 import Settings from '../presentation/Settings';
-import Teams from './Teams';
-import Rules from './Rules';
-import Dicer from '../presentation/Dicer';
+//import Teams from './Teams';
+//import Rules from './Rules';
+//import Dicer from '../presentation/Dicer';
 import Message from '../presentation/Message';
+import TeamList from '../presentation/TeamList';
 import './Teamer.css';
 
 class Teamer extends Component {
@@ -259,6 +260,11 @@ class Teamer extends Component {
           startDice={this.startDice.bind(this) }
           dice={this.dice.bind(this) }
           />  
+
+        <TeamList
+          teams={this.state.teams}
+          remove={this.removeTeam.bind(this) }
+          />
       </div>
     )
   }
