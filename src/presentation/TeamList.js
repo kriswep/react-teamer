@@ -69,7 +69,6 @@ const TodoList = ({teams, remove}) => {
         cellHeight={200}
         style={styles.gridList}
         >
-        <Subheader>Teams</Subheader>
         {teamNode}
       </GridList>
     </div>);
