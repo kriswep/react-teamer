@@ -2,7 +2,8 @@
   "name": "react-teamer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://test.wetainment.com/teamer",
+  "homepage": "https://kriswep.github.io/react-teamer",
+  "license": "MIT",
   "devDependencies": {
     "react-scripts": "0.4.1"
   },
