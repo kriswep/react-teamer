@@ -4,6 +4,8 @@ React teamer is an app to assign a given number of people randomly to a given nu
 
 Start your next team building session or other game with fairly assigned teams!
 
+[Try it!](https://kriswep.github.io/react-teamer/)
+
 ## Development
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
